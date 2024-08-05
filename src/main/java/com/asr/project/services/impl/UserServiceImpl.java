@@ -3,8 +3,10 @@ package com.asr.project.services.impl;
 import com.asr.project.dtos.UserDto;
 import com.asr.project.entities.User;
 import com.asr.project.exceptions.ResourceNotFoundException;
+import com.asr.project.payloads.PageableResponse;
 import com.asr.project.repositories.UserRepository;
 import com.asr.project.services.UserService;
+import com.asr.project.utils.Helper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -64,14 +66,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getUsers(int pageNumber, int pageSize, String sortBy, String sortDir) {
+    public PageableResponse<UserDto> getUsers(int pageNumber, int pageSize, String sortBy, String sortDir) {
 
         Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending():
                     Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(pageNumber-1, pageSize, sort);
         Page<User> page = userRepository.findAll(pageable);
-        List<User> users = page.toList();
-        return users.stream().map(this::entityToDto).toList();
+
+        return Helper.pageableResponse(page,UserDto.class);
     }
 
 
@@ -94,11 +96,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> searchUser(String keyword) {
+    public PageableResponse<UserDto> searchUser(String keyword, int pageNumber, int pageSize, String sortBy, String sortDir) {
 
-        List<User> users = userRepository.findByNameContains(keyword);
+        Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending():
+                Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber-1, pageSize, sort);
+        Page<User> page = userRepository.findByNameContains(keyword, pageable);
 
-        return users.stream().map(this::entityToDto).toList();
+        return Helper.pageableResponse(page, UserDto.class);
     }
 
     private User dtoToEntity(UserDto userDto) {

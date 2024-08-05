@@ -29,6 +29,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
     }
 
+    @ExceptionHandler(BadApiResponseException.class)
+    public ResponseEntity<ApiResponseMessage> badApiResponseHandler(BadApiResponseException e) {
+
+        logger.info("Bad API Request !!");
+        ApiResponseMessage message = ApiResponseMessage.builder().message(e.getMessage()).
+                status(HttpStatus.BAD_REQUEST).success(true).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> methodArgumentNotValidHandler(MethodArgumentNotValidException e) {
 

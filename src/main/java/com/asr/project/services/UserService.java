@@ -1,6 +1,8 @@
 package com.asr.project.services;
 
 import com.asr.project.dtos.UserDto;
+import com.asr.project.payloads.PageableResponse;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -16,7 +18,7 @@ public interface UserService {
     void deleteUser(String userId);
 
     //get all users
-    List<UserDto> getUsers(int pageNumber, int pageSize, String sortBy, String sortDir);
+    PageableResponse<UserDto> getUsers(int pageNumber, int pageSize, String sortBy, String sortDir);
 
     //get single user by id
     UserDto getUserById(String userId);
@@ -25,6 +27,6 @@ public interface UserService {
     UserDto getUserByEmail(String email);
 
     //search user
-    List<UserDto> searchUser(String keyword);
+    PageableResponse<UserDto> searchUser(String keyword, int pageNumber, int pageSize, String sortBy, String sortDir);
 
 }
