@@ -19,7 +19,7 @@ public class FileServiceImpl implements FileService {
 
     private Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
 
-    private List<String> imageExtension = List.of(".png", ".jpg", ",jpeg");
+    private List<String> imageExtension = List.of(".png", ".jpg", ".jpeg");
 
     @Override
     public String uploadFile(MultipartFile file, String path) throws IOException {

@@ -10,7 +10,7 @@ public class Helper {
 
     private Helper(){}
 
-    public static<U,V> PageableResponse<V> pageableResponse(Page<U> page, Class<V> type) {
+    public static<U,V> PageableResponse<V> getPageableResponse(Page<U> page, Class<V> type) {
 
         ModelMapper mapper = new ModelMapper();
 

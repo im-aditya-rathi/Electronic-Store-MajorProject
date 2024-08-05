@@ -2,7 +2,6 @@ package com.asr.project.services;
 
 import com.asr.project.dtos.CategoryDto;
 import com.asr.project.payloads.PageableResponse;
-import org.springframework.stereotype.Service;
 
 public interface CategoryService {
 

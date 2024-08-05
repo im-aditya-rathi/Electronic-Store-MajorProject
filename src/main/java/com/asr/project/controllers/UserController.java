@@ -27,10 +27,10 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    FileService fileService;
+    private FileService fileService;
 
     @Value("${user.profile.image.path}")
     private String imageUploadPath;
@@ -57,7 +57,7 @@ public class UserController {
 
         UserDto userDto = userService.getUserById(userId);
         String fileName = userDto.getUserImage();
-        if(!fileName.isBlank() && fileName != null) {
+        if(fileName != null && !fileName.isBlank()) {
             fileService.deleteFile(imageUploadPath, fileName);
         }
         userService.deleteUser(userId);
@@ -107,7 +107,7 @@ public class UserController {
 
     //search user
     @GetMapping("search/{keyword}")
-    ResponseEntity<PageableResponse<UserDto>> searchUsers(@PathVariable String keyword,
+    ResponseEntity<PageableResponse<UserDto>> searchUser(@PathVariable String keyword,
                 @RequestParam( value = "pageNumber", defaultValue = "1") int pageNumber,
                 @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                 @RequestParam(value = "sortBy", defaultValue = "name") String sortBy,

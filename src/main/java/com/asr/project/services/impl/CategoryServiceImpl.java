@@ -21,10 +21,10 @@ import java.util.UUID;
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
-    CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     @Override
     public CategoryDto createCategory(CategoryDto categoryDto) {
@@ -40,7 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto updateCategory(CategoryDto categoryDto, String categoryId) {
 
         Category category = categoryRepository.findById(categoryId).
-                orElseThrow(()->new ResourceNotFoundException("Category ID not found"));
+                orElseThrow(()->new ResourceNotFoundException("Category ID not found !!"));
         category.setTitle(categoryDto.getTitle());
         category.setDescription(categoryDto.getDescription());
         category.setCoverImage(categoryDto.getCoverImage());
@@ -52,7 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteCategory(String categoryId) {
 
         Category category = categoryRepository.findById(categoryId).
-                orElseThrow(()->new ResourceNotFoundException("Category ID not found"));
+                orElseThrow(()->new ResourceNotFoundException("Category ID not found !!"));
         categoryRepository.delete(category);
     }
 
@@ -62,14 +62,14 @@ public class CategoryServiceImpl implements CategoryService {
         Sort sort = "asc".equalsIgnoreCase(sortDir) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(pageNumber-1, pageSize, sort);
         Page<Category> page = categoryRepository.findAll(pageable);
-        return Helper.pageableResponse(page, CategoryDto.class);
+        return Helper.getPageableResponse(page, CategoryDto.class);
     }
 
     @Override
     public CategoryDto getCategory(String categoryId) {
 
         Category category = categoryRepository.findById(categoryId).
-                orElseThrow(()->new ResourceNotFoundException("Category ID not found"));
+                orElseThrow(()->new ResourceNotFoundException("Category ID not found !!"));
         return entityToDto(category);
     }
 
@@ -79,7 +79,7 @@ public class CategoryServiceImpl implements CategoryService {
         Sort sort = "asc".equalsIgnoreCase(sortDir) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(pageNumber-1, pageSize, sort);
         Page<Category> page = categoryRepository.findByTitleContaining(keyword, pageable);
-        return Helper.pageableResponse(page, CategoryDto.class);
+        return Helper.getPageableResponse(page, CategoryDto.class);
     }
 
     private CategoryDto entityToDto(Category category) {

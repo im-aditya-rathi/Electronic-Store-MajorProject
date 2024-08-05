@@ -25,13 +25,13 @@ import java.io.InputStream;
 public class CategoryController {
 
     @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
 
     @Autowired
-    FileService fileService;
+    private FileService fileService;
 
     @Value("${category.profile.image.path}")
-    String imageUploadPath;
+    private String imageUploadPath;
 
     @PostMapping
     ResponseEntity<CategoryDto> createCategory(@RequestBody @Valid CategoryDto categoryDto) {
@@ -52,12 +52,12 @@ public class CategoryController {
 
         CategoryDto categoryDto = categoryService.getCategory(categoryId);
         String fileName = categoryDto.getCoverImage();
-        if(!fileName.isBlank() && fileName != null) {
+        if(fileName != null && !fileName.isBlank()) {
             fileService.deleteFile(imageUploadPath, fileName);
         }
         categoryService.deleteCategory(categoryId);
         ApiResponseMessage response = ApiResponseMessage.builder().
-                message("User deleted successfully").success(true).
+                message("Category deleted successfully").success(true).
                 status(HttpStatus.OK).build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -67,8 +67,7 @@ public class CategoryController {
                @RequestParam( value = "pageNumber", defaultValue = "1") int pageNumber,
                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                @RequestParam(value = "sortBy", defaultValue = "title") String sortBy,
-               @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir)
-    {
+               @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir) {
 
         return ResponseEntity.status(HttpStatus.OK).
                 body(categoryService.getCategories(pageNumber, pageSize, sortBy, sortDir));
@@ -82,7 +81,7 @@ public class CategoryController {
     }
 
     @GetMapping("search/{keyword}")
-    ResponseEntity<PageableResponse<CategoryDto>> searchUsers(@PathVariable String keyword,
+    ResponseEntity<PageableResponse<CategoryDto>> searchCategory(@PathVariable String keyword,
                 @RequestParam( value = "pageNumber", defaultValue = "1") int pageNumber,
                 @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                 @RequestParam(value = "sortBy", defaultValue = "title") String sortBy,

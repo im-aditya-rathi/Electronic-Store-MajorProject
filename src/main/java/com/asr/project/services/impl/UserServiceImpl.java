@@ -15,15 +15,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -45,7 +43,7 @@ public class UserServiceImpl implements UserService {
     public UserDto updateUser(UserDto userDto, String userId) {
 
         User user = userRepository.findById(userId).
-                orElseThrow(()->new ResourceNotFoundException("User ID not found"));
+                orElseThrow(()->new ResourceNotFoundException("User ID not found !!"));
         user.setName(userDto.getName());
         user.setPassword(userDto.getPassword());
         user.setGender(userDto.getGender());
@@ -61,7 +59,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(String userId) {
 
         User user = userRepository.findById(userId).
-                orElseThrow(()->new ResourceNotFoundException("User ID not found"));
+                orElseThrow(()->new ResourceNotFoundException("User ID not found !!"));
         userRepository.delete(user);
     }
 
@@ -73,7 +71,7 @@ public class UserServiceImpl implements UserService {
         Pageable pageable = PageRequest.of(pageNumber-1, pageSize, sort);
         Page<User> page = userRepository.findAll(pageable);
 
-        return Helper.pageableResponse(page,UserDto.class);
+        return Helper.getPageableResponse(page,UserDto.class);
     }
 
 
@@ -81,7 +79,7 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserById(String userId) {
 
         User user = userRepository.findById(userId).
-                orElseThrow(()->new ResourceNotFoundException("User ID not found"));
+                orElseThrow(()->new ResourceNotFoundException("User ID not found !!"));
 
         return entityToDto(user);
     }
@@ -90,7 +88,7 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserByEmail(String email) {
 
         User user = userRepository.findByEmail(email).
-                orElseThrow(()->new ResourceNotFoundException("User not found with requested email"));
+                orElseThrow(()->new ResourceNotFoundException("User not found with requested email !!"));
 
         return entityToDto(user);
     }
@@ -103,7 +101,7 @@ public class UserServiceImpl implements UserService {
         Pageable pageable = PageRequest.of(pageNumber-1, pageSize, sort);
         Page<User> page = userRepository.findByNameContains(keyword, pageable);
 
-        return Helper.pageableResponse(page, UserDto.class);
+        return Helper.getPageableResponse(page, UserDto.class);
     }
 
     private User dtoToEntity(UserDto userDto) {
