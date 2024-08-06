@@ -1,9 +1,11 @@
 package com.asr.project.services.impl;
 
 import com.asr.project.dtos.ProductDto;
+import com.asr.project.entities.Category;
 import com.asr.project.entities.Product;
 import com.asr.project.exceptions.ResourceNotFoundException;
 import com.asr.project.payloads.PageableResponse;
+import com.asr.project.repositories.CategoryRepository;
 import com.asr.project.repositories.ProductRepository;
 import com.asr.project.services.ProductService;
 import com.asr.project.utils.Helper;
@@ -23,6 +25,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -104,6 +109,43 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> products = productRepository.findByTitleContaining(keyword, pageable);
 
         return Helper.getPageableResponse(products, ProductDto.class);
+    }
+
+    @Override
+    public PageableResponse<ProductDto> findAllOfCategory(String categoryId, int pageNumber, int pageSize, String sortBy, String sortDir) {
+
+        Category category = categoryRepository.findById(categoryId).
+                orElseThrow(()->new ResourceNotFoundException("Category ID not found !!"));
+        Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending():
+                Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber-1, pageSize, sort);
+        Page<Product> products = productRepository.findByCategory(category, pageable);
+        return Helper.getPageableResponse(products, ProductDto.class);
+    }
+
+    @Override
+    public ProductDto createWithCategory(ProductDto productDto, String categoryId) {
+
+        Category category = categoryRepository.findById(categoryId).
+                orElseThrow(()->new ResourceNotFoundException("Category ID not found !!"));
+        Product product = dtoToEntity(productDto);
+        product.setProductId(UUID.randomUUID().toString());
+        product.setAddedDate(new Date());
+        product.setCategory(category);
+        Product product1 = productRepository.save(product);
+        return entityToDto(product1);
+    }
+
+    @Override
+    public ProductDto updateCategory(String categoryId, String productId) {
+
+        Product product = productRepository.findById(productId).
+                orElseThrow(()-> new ResourceNotFoundException("Product ID not found !!"));
+        Category category = categoryRepository.findById(categoryId).
+                orElseThrow(()->new ResourceNotFoundException("Category ID not found !!"));
+        product.setCategory(category);
+        Product product1 = productRepository.save(product);
+        return entityToDto(product1);
     }
 
     private ProductDto entityToDto(Product product) {

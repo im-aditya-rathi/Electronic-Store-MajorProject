@@ -1,11 +1,13 @@
 package com.asr.project.controllers;
 
 import com.asr.project.dtos.CategoryDto;
+import com.asr.project.dtos.ProductDto;
 import com.asr.project.payloads.ApiResponseMessage;
 import com.asr.project.payloads.ImageResponseMessage;
 import com.asr.project.payloads.PageableResponse;
 import com.asr.project.services.CategoryService;
 import com.asr.project.services.FileService;
+import com.asr.project.services.ProductService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private FileService fileService;
@@ -91,7 +96,34 @@ public class CategoryController {
                 body(categoryService.searchCategory(keyword, pageNumber, pageSize, sortBy, sortDir));
     }
 
+    @GetMapping("/{categoryId}/products")
+    ResponseEntity<PageableResponse<ProductDto>> getProductsOfCategory(@PathVariable String categoryId,
+            @RequestParam( value = "pageNumber", defaultValue = "1") int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "title") String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir) {
 
+        return ResponseEntity.status(HttpStatus.OK).
+                body(productService.findAllOfCategory(categoryId, pageNumber, pageSize, sortBy, sortDir));
+    }
+
+    @PostMapping("/{categoryId}/products")
+    ResponseEntity<ProductDto> createProductWithCategory(@PathVariable String categoryId,
+            @RequestBody ProductDto productDto) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(productService.createWithCategory(productDto, categoryId));
+    }
+
+    @PutMapping("/{categoryId}/products/{productId}")
+    ResponseEntity<ProductDto> addProductToCategory(@PathVariable String categoryId,
+            @PathVariable String productId) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(productService.updateCategory(categoryId, productId));
+    }
+
+
+
+//    ############################### Image Operation ##############################
     @PostMapping("/image/{categoryId}")
     ResponseEntity<ImageResponseMessage> updateCategoryImage(@PathVariable String categoryId,
                 @RequestParam("image") MultipartFile file) throws IOException {

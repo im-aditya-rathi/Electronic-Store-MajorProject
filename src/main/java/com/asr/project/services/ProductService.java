@@ -19,4 +19,12 @@ public interface ProductService {
 
     PageableResponse<ProductDto> searchProduct(String keyword, int pageNumber, int pageSize, String sortBy, String sortDir);
 
+    PageableResponse<ProductDto> findAllOfCategory(String categoryId, int pageNumber, int pageSize, String sortBy, String sortDir);
+
+    //create product with category
+    ProductDto createWithCategory(ProductDto productDto, String categoryId);
+
+    //assign product to category
+    ProductDto updateCategory(String categoryId, String productId);
+
 }

@@ -1,7 +1,5 @@
 package com.asr.project.dtos;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -27,4 +25,6 @@ public class CategoryDto {
     @Pattern(regexp = "(.*)|(.+\\.(gif|jpe?g|png))", flags = Pattern.Flag.CASE_INSENSITIVE,
             message = "Invalid Image Name !!")
     private String coverImage;
+
+//    private ProductDto product;
 }

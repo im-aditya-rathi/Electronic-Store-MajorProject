@@ -100,6 +100,7 @@ public class ProductController {
     }
 
 
+    //    ############################### Image Operation ##############################
     @PostMapping("/image/{productId}")
     ResponseEntity<ImageResponseMessage> updateProductImage(@PathVariable String productId,
             @RequestParam("image") MultipartFile file) throws IOException {

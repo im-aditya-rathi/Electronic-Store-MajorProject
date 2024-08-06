@@ -117,7 +117,8 @@ public class UserController {
                 body(userService.searchUser(keyword, pageNumber, pageSize, sortBy, sortDir));
     }
 
-    //upload user image
+
+//    ############################### Image Operation ##############################
     @PostMapping("/image/{userId}")
     ResponseEntity<ImageResponseMessage> uploadUserImage(
             @PathVariable("userId") String userId,

@@ -1,5 +1,6 @@
 package com.asr.project.repositories;
 
+import com.asr.project.entities.Category;
 import com.asr.project.entities.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,4 +10,5 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 
     Page<Product> findByLiveTrue(Pageable pageable);
     Page<Product> findByTitleContaining(String keyword, Pageable pageable);
+    Page<Product> findByCategory(Category category, Pageable pageable);
 }
