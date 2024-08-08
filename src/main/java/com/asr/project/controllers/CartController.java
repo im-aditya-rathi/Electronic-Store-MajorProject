@@ -16,7 +16,7 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    @PostMapping("/{userId}")
+    @PostMapping("/users/{userId}")
     ResponseEntity<CartDto> addItemToCart(@PathVariable String userId,
             @RequestBody AddItemCartRequest addItemCartRequest) {
 
@@ -24,14 +24,14 @@ public class CartController {
                 body(cartService.addItemToCart(userId, addItemCartRequest));
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/users/{userId}")
     ResponseEntity<CartDto> getCart(@PathVariable String userId) {
 
         CartDto cartDto = cartService.getCartByUser(userId);
         return new ResponseEntity<>(cartDto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{userId}/items/{itemId}")
+    @DeleteMapping("/users/{userId}/items/{itemId}")
     ResponseEntity<ApiResponseMessage> removeItemToCart(@PathVariable String userId, @PathVariable String itemId) {
 
         cartService.removeItemFromCart(userId, itemId);
@@ -41,7 +41,7 @@ public class CartController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/users/{userId}")
     ResponseEntity<ApiResponseMessage> clearCart(@PathVariable String userId) {
 
         cartService.clearCart(userId);
