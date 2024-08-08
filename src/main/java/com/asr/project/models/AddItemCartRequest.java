@@ -1,6 +1,5 @@
 package com.asr.project.models;
 
-import com.asr.project.dtos.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
