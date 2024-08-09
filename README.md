@@ -1,7 +1,7 @@
 # Electronic Store [Major Project]
 
 [![View the documentation - PDF](https://img.shields.io/badge/View%20PDF%20documentation-color)](https://github.com/im-aditya-rathi/Electronic_Store/blob/master/src/main/resources/documentation/project_documentation.pdf)
-[![View postman documentation](https://img.shields.io/badge/View%20postman%20documentation-blue)](https://documenter.getpostman.com/view/18545238/2sA3s3FqgB)
+[![View postman documentation](https://img.shields.io/badge/View%20postman%20documentation%20(online)-blue)](https://documenter.getpostman.com/view/18545238/2sA3s3FqgB)
 
 ## Overview
 **Electronic_Store** is a comprehensive online electronics store application built with Java, Spring Boot, Hibernate, and MySQL. The application provides a full set of web services to manage users, categories, products, carts, and orders, each with well-defined JPA relationships, enabling nested API responses. The project is designed to be scalable, maintainable, and user-friendly, with a focus on clean code architecture.
