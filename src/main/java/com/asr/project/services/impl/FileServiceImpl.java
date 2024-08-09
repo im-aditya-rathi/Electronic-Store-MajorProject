@@ -1,6 +1,7 @@
 package com.asr.project.services.impl;
 
 import com.asr.project.exceptions.BadApiResponseException;
+import com.asr.project.exceptions.ResourceNotFoundException;
 import com.asr.project.services.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +54,13 @@ public class FileServiceImpl implements FileService {
     public InputStream getResource(String path, String name) throws FileNotFoundException {
 
         String fullPath = path + File.separator + name;
-        return new FileInputStream(fullPath);
+        FileInputStream fileInputStream = null;
+        try {
+            fileInputStream = new FileInputStream(fullPath);
+        } catch (FileNotFoundException exception) {
+            throw new ResourceNotFoundException("Image not found !!");
+        }
+        return fileInputStream;
     }
 
     @Override
@@ -63,7 +70,7 @@ public class FileServiceImpl implements FileService {
         try {
             Files.delete(Path.of(fullPathName));
         } catch (IOException e) {
-            throw  new RuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
 }

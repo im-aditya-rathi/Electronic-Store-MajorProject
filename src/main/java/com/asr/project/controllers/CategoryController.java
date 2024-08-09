@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/api/v1/categories")
 public class CategoryController {
 
     @Autowired
@@ -85,8 +85,9 @@ public class CategoryController {
                 body(categoryService.getCategory(categoryId));
     }
 
-    @GetMapping("search/{keyword}")
-    ResponseEntity<PageableResponse<CategoryDto>> searchCategory(@PathVariable String keyword,
+    @GetMapping("/search")
+    ResponseEntity<PageableResponse<CategoryDto>> searchCategory(
+                @RequestParam(value = "keyword") String keyword,
                 @RequestParam( value = "pageNumber", defaultValue = "1") int pageNumber,
                 @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                 @RequestParam(value = "sortBy", defaultValue = "title") String sortBy,
@@ -124,7 +125,7 @@ public class CategoryController {
 
 
 //    ############################### Image Operation ##############################
-    @PostMapping("/image/{categoryId}")
+    @PostMapping("/{categoryId}/image")
     ResponseEntity<ImageResponseMessage> updateCategoryImage(@PathVariable String categoryId,
                 @RequestParam("image") MultipartFile file) throws IOException {
 
@@ -140,7 +141,7 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseMessage);
     }
 
-    @GetMapping("/image/{categoryId}")
+    @GetMapping("/{categoryId}/image")
     void serveCategoryImage(@PathVariable String categoryId,
                  HttpServletResponse response) throws IOException {
 

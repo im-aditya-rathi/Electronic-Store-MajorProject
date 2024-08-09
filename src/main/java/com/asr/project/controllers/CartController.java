@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("carts")
+@RequestMapping("/api/v1/carts")
 public class CartController {
 
     @Autowired
@@ -44,9 +44,16 @@ public class CartController {
     @DeleteMapping("/users/{userId}")
     ResponseEntity<ApiResponseMessage> clearCart(@PathVariable String userId) {
 
-        cartService.clearCart(userId);
+        String responseMessage = "";
+        CartDto cartDto = cartService.getCartByUser(userId);
+        if(cartDto.getCartItems().isEmpty()) {
+            responseMessage = "Cart is already empty !!";
+        } else {
+            responseMessage = "Now cart is empty !!";
+            cartService.clearCart(userId);
+        }
         ApiResponseMessage response = ApiResponseMessage.builder().
-                message("Now cart is empty !!").success(true).
+                message(responseMessage).success(true).
                 status(HttpStatus.OK).build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

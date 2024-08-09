@@ -133,6 +133,10 @@ public class CartServiceImpl implements CartService {
                 orElseThrow(()->new ResourceNotFoundException("User ID not found !!"));
         Cart cart = cartRepository.findByUser(user).
                 orElseThrow(()->new ResourceNotFoundException("Cart of given user not found !!"));
+
+        if(cart.getCartItems().isEmpty()) {
+
+        }
         cart.getCartItems().clear();
         cartRepository.save(cart);
     }

@@ -23,7 +23,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     @Autowired
@@ -70,7 +70,7 @@ public class UserController {
     //find all users
     @GetMapping
     ResponseEntity<PageableResponse<UserDto>> getUsers(@RequestParam MultiValueMap<String, String> multiValueMap)
-//               @RequestParam( value = "pageNumber", defaultValue = "0") int pageNumber,
+//               @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
 //               @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
 //               @RequestParam(value = "sortBy", defaultValue = "name") String sortBy,
 //               @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir)
@@ -98,16 +98,17 @@ public class UserController {
     }
 
     //find user by email
-    @GetMapping("email/{email}")
-    ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) {
+    @GetMapping("/email")
+    ResponseEntity<UserDto> getUserByEmail(@RequestParam("email") String email) {
 
         UserDto user = userService.getUserByEmail(email);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
     //search user
-    @GetMapping("search/{keyword}")
-    ResponseEntity<PageableResponse<UserDto>> searchUser(@PathVariable String keyword,
+    @GetMapping("/search")
+    ResponseEntity<PageableResponse<UserDto>> searchUser(
+                @RequestParam(value = "keyword") String keyword,
                 @RequestParam( value = "pageNumber", defaultValue = "1") int pageNumber,
                 @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                 @RequestParam(value = "sortBy", defaultValue = "name") String sortBy,
@@ -119,7 +120,7 @@ public class UserController {
 
 
 //    ############################### Image Operation ##############################
-    @PostMapping("/image/{userId}")
+    @PostMapping("/{userId}/image")
     ResponseEntity<ImageResponseMessage> uploadUserImage(
             @PathVariable("userId") String userId,
             @RequestParam("image") MultipartFile file
@@ -138,7 +139,7 @@ public class UserController {
     }
 
     //Serve user image
-    @GetMapping("/image/{userId}")
+    @GetMapping("/{userId}/image")
     void serverUserImage(@PathVariable String userId, HttpServletResponse response)
             throws IOException {
 

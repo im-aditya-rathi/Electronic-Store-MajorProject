@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/v1/products")
 public class ProductController {
 
     @Autowired
@@ -88,8 +88,9 @@ public class ProductController {
         return ResponseEntity.ok(productService.getLiveProducts(pageNumber, pageSize, sortBy, sortDir));
     }
 
-    @GetMapping("search/{keyword}")
-    ResponseEntity<PageableResponse<ProductDto>> searchProduct(@PathVariable String keyword,
+    @GetMapping("/search")
+    ResponseEntity<PageableResponse<ProductDto>> searchProduct(
+            @RequestParam(value = "keyword") String keyword,
             @RequestParam( value = "pageNumber", defaultValue = "1") int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "sortBy", defaultValue = "title") String sortBy,
@@ -101,7 +102,7 @@ public class ProductController {
 
 
     //    ############################### Image Operation ##############################
-    @PostMapping("/image/{productId}")
+    @PostMapping("/{productId}/image")
     ResponseEntity<ImageResponseMessage> updateProductImage(@PathVariable String productId,
             @RequestParam("image") MultipartFile file) throws IOException {
 
@@ -117,7 +118,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseMessage);
     }
 
-    @GetMapping("/image/{productId}")
+    @GetMapping("/{productId}/image")
     void serveProductIdImage(@PathVariable String productId, HttpServletResponse response) throws IOException {
 
         ProductDto productDto = productService.getProduct(productId);
