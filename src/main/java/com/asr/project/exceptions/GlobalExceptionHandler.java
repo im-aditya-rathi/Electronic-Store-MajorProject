@@ -3,6 +3,7 @@ package com.asr.project.exceptions;
 import com.asr.project.payloads.ApiResponseMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -69,6 +70,20 @@ public class GlobalExceptionHandler {
         });
 
         return new  ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiResponseMessage> DataIntegrityViolationHandler(DataIntegrityViolationException ex) {
+
+        logger.info("Error occur while saving data in database !!");
+
+        ApiResponseMessage responseMessage = ApiResponseMessage.builder()
+                .success(false)
+                .message(ex.getMessage())
+                .status(HttpStatus.BAD_REQUEST)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMessage);
     }
 
 }
